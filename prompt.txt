@@ -1,0 +1,85 @@
+============================================
+                    idea
+==============================================
+i want to create a golang project
+- it will follow solid principals
+- i am building distributed file system
+
+what i am thinking i will run this binary in system and it will create a folder in /tmp for now, and store data and get data
+2 endpoint just for crud and delete too
+and a endpoint to check if a requested file exsists or not.
+
+
+so there will be another gateway service that will store data like this
+
+/ folder 1
+    - file_abc.txt -> server 1
+    - file_3.md -> server 1
+    - install.exe -> server 2
+    - kjksz -> server 3
+
+
+and this gateway will show data to users, but for retrival it will internally call the connected nodes, 
+and ask for data or throw the direct url so that users can either view or download or whatever with the data.
+
+i think this is the only easy and better decoupled way to design a distributed file system
+=====================================
+
+
+
+You are an expert in building distributed backend systems.  
+Generate a production-ready Node.js + TypeScript backend project for a "gateway" service in a distributed file system.  
+
+Requirements:
+- Framework: Express.js (with TypeScript).
+- Purpose: Gateway manages metadata and routes file operations to multiple Go-based storage nodes.
+
+Core Responsibilities:
+1. **Config & Node Management**
+   - Read initial list of storage node base URLs from config file (e.g., config/nodes.json).
+   - Periodically poll each node’s `/api/v1/instance` endpoint to check health.
+   - Maintain an in-memory pool of healthy nodes.
+   - Use **round robin** strategy to distribute new uploads across nodes.
+
+2. **Metadata & Folder AST**
+   - Maintain an internal metadata state (in-memory + JSON file persistence).
+   - Metadata should include:
+     - file id
+     - original filename
+     - content type
+     - size
+     - extension
+     - which node(s) store it
+     - virtual folder path (like `/folder1/folder2/file.txt`).
+   - Allow creating folders in this AST.
+   - Persist AST to disk as `metadata.json`.
+
+3. **Gateway API Endpoints (Express)**
+   Base path: `/api/v1`
+   - `POST /files` → Upload file  
+     *Round robin select node, forward upload, save metadata with folder mapping.*
+   - `GET /files/:id` → Download file  
+     *Lookup metadata, proxy request to correct storage node.*
+   - `GET /files/:id/info` → File metadata info.  
+   - `HEAD /files/:id` → Check if file exists.  
+   - `DELETE /files/:id` → Delete file (also forward to node).  
+   - `POST /folders` → Create virtual folder in AST.  
+   - `GET /tree` → Return entire folder tree with files and mappings.
+
+4. **Project Structure**
+   - `src/server.ts` → Express server bootstrap
+   - `src/routes/` → API route definitions
+   - `src/controllers/` → Handler logic
+   - `src/services/` → Node pool manager, file manager, metadata manager
+   - `src/models/` → Type definitions (File, Folder, NodeInstance)
+   - `config/nodes.json` → Initial storage node config
+   - `data/metadata.json` → Persistent metadata store
+   - `scripts/` → Health check / background tasks
+
+5. **Other Requirements**
+   - Use async/await with axios/fetch for internal node calls.
+   - Proper error handling + logging middleware.
+   - Include a `Makefile` with `make dev`, `make build`, `make start`.
+   - Include a README.md explaining how to run gateway, configure nodes, and test endpoints with curl.
+
+Output the complete folder structure with example code.

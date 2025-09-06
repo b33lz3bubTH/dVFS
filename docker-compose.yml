@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  storage-node-1:
+    build: .
+    container_name: storage-node-1
+    ports:
+      - "8081:8080"
+    environment:
+      - PORT=8080
+      - STORAGE_PATH=/data/storage
+      - INSTANCE_ID=node-1-us-east-1
+    volumes:
+      - storage1:/data/storage
+    networks:
+      - storage-network
+    restart: unless-stopped
+
+  storage-node-2:
+    build: .
+    container_name: storage-node-2
+    ports:
+      - "8082:8080"
+    environment:
+      - PORT=8080
+      - STORAGE_PATH=/data/storage
+      - INSTANCE_ID=node-2-us-west-1
+    volumes:
+      - storage2:/data/storage
+    networks:
+      - storage-network
+    restart: unless-stopped
+
+  storage-node-3:
+    build: .
+    container_name: storage-node-3
+    ports:
+      - "8083:8080"
+    environment:
+      - PORT=8080
+      - STORAGE_PATH=/data/storage
+      - INSTANCE_ID=node-3-eu-west-1
+    volumes:
+      - storage3:/data/storage
+    networks:
+      - storage-network
+    restart: unless-stopped
+
+volumes:
+  storage1:
+  storage2:
+  storage3:
+
+networks:
+  storage-network:
+    driver: bridge
