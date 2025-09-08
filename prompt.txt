@@ -83,3 +83,21 @@ Core Responsibilities:
    - Include a README.md explaining how to run gateway, configure nodes, and test endpoints with curl.
 
 Output the complete folder structure with example code.
+
+
+just a mode that will hold user= if during pushing it doesnt exsits it will create a user with emailor what ever i pass
+dont tightly couple it, and for vfs its store a /
+
+and during upload always verify the path it will be abs.
+
+
+there will be a user=sourav@gmail.com 
+for each user there is a root
+we can get the folder structure from there there will be an endpoint to get the entire folder 
+store the folder and files things in in sqlite db with prisma.
+secondly.
+each file will be uploaded to storage node, and the response will be stored here
+when uploading a folder there will be /game/prompt.txt 
+/game/bin.exe 
+
+like this i will give and file, upload individuall but store the data such as i get it as file system.
