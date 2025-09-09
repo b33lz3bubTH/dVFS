@@ -1,0 +1,47 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:../data/dvfs.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  files     File[]
+  folders   Folder[]
+}
+
+model File {
+  id           String   @id @default(uuid())
+  filename     String
+  contentType  String
+  size         Int
+  extension    String
+  nodeUrl      String   // URL of the storage node
+  virtualPath  String   // Full path including filename
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([userId])
+  @@index([virtualPath])
+}
+
+model Folder {
+  id          String   @id @default(uuid())
+  name        String
+  path        String   // Full path
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, path])
+  @@index([userId])
+}

@@ -1,0 +1,10 @@
+{
+  "nodes": [
+    {
+      "id": "node1",
+      "baseUrl": "http://localhost:8081",
+      "healthEndpoint": "/api/v1/instance"
+    }
+  ],
+  "healthCheckIntervalMs": 10000
+}

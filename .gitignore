@@ -104,3 +104,24 @@ temp/
 # Project specific
 # prompt.txt
 # shell.nix
+
+# nodejs gitignore
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log**
+.pnpm-store/
+.pnpm-debug.log*
+.pnpmfile.cjs
+.pnpmfile.js
+.pnpm-lock.yaml
+.pnpm/
+.eslintcache
+
+# TypeScript
+*.tsbuildinfo
+# Optional eslint cache
+.eslintcache
+
+dvfs.db
